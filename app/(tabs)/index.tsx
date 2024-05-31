@@ -1,4 +1,3 @@
-import { Navigator } from "expo-router";
 import React from "react";
 import {
   View,
@@ -6,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  ImageSourcePropType,
 } from "react-native";
 
 
