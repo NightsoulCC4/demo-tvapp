@@ -1,70 +1,110 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Navigator } from "expo-router";
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ImageSourcePropType,
+} from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
+const App = () => {
+  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
+  const [selectedOption, setSelectedOption] = React.useState<string>("Netflix");
+
+  const handleOptionPress = (index: number, option: string): void => {
+    setSelectedIndex(index);
+    setSelectedOption(option);
+  };
+
+  const options: string[] = ["Netflix", "Youtube", "BiliBili"];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome to My TV App Demo!</Text>
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={{
+            uri: "https://envato-shoebox-0.imgix.net/4e0d/021d-2021-400b-8d54-7b9df574667a/2527394.jpg?auto=compress%2Cformat&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark2.png&w=800&fit=max&markalign=center%2Cmiddle&markalpha=18&s=95af6c7a21b7577df8be57add95a7d21",
+          }} // Replace with a TV-friendly image URL
+          style={styles.image}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <Text style={styles.description}>
+          This is a simple demo to showcase some basic TV app elements.
+        </Text>
+
+        {options.map((option, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.option,
+              index === selectedIndex && styles.optionSelected,
+            ]}
+            onPress={() => handleOptionPress(index, options[index])}
+          >
+            <Text
+              style={[
+                styles.optionText,
+                index === selectedIndex && styles.optionSelected,
+              ]}
+            >
+              {option}
+            </Text>
+          </TouchableOpacity>
+        ))}
+
+        <Text style={styles.optionText}>
+          You are on {selectedOption} application.
+        </Text>
+      </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  title: {
+    fontSize: 48,
+    color: "#fff",
+    marginBottom: 20,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  image: {
+    width: 320,
+    height: 240,
+  },
+  description: {
+    fontSize: 24,
+    color: "#ddd",
+    marginTop: 20,
+  },
+  option: {
+    backgroundColor: "#444",
+    textAlign: "center",
+    width: "100%",
+    maxWidth: 140,
+    padding: 15,
+    margin: 10,
+  },
+  optionSelected: {
+    backgroundColor: "#fff",
+    opacity: 0.5,
+    color: "black",
+  },
+  optionText: {
+    fontSize: 24,
+    color: "#fff",
+    textAlign: "center",
+  },
+  optionTextSelected: {
+    fontSize: 24,
+    color: "#000",
+    textAlign: "center",
   },
 });
+
+export default App;
